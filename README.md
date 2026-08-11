@@ -84,13 +84,11 @@ can never drift between the two. To reveal an answer in class, open the matching
 Share this URL; students click **Fork**:
 
 ```
-https://stackblitz.com/github/wix-academy/enter-js-heroes
+https://stackblitz.com/github/shani-ti/enter-js-heroes
 ```
 
-That URL only works while this repo is **public**. `wix-academy` does not let plain
-members create or publish public repos, so if this repo is currently private an org
-owner has to flip it - check before class, because a private repo silently breaks the
-StackBlitz fork flow for every student.
+That URL only works while this repo is **public** - a private repo silently breaks the
+fork flow for every student, so check before class.
 
 ### Run locally (StackBlitz needs none of this)
 
