@@ -1,17 +1,52 @@
-/* ===== Hero HQ · Enter - JS =====
-   Wix palette: slate #455466 · lavender #CDC4FF · orange #FF8044
-                cream #EDE9E5 · blue #166AEA
-   You are not asked to write CSS in this course - the classes your JS creates
-   in steps 6-8 (.hero-card, .origin, .stats, .hp-bar, .downed) are all styled
-   here already. Change anything you like. */
+/* ===== HERO HQ · Enter - JS =====
+   Dark "night city" theme. You are not asked to write CSS in this course -
+   every class your JS creates in steps 6-8 is already styled here:
+
+     .hero-card          one hero
+       h3                name
+       .origin           Kryptonian / Mutant / ...
+       .dayjob           work.occupation, added in step 8
+       .stats            HP: nn
+       .hp-bar > .hp-fill   the health bar (JS sets width: nn%)
+     .hero-card.downed   a hero on 0 HP
+     .hero-card.villain  optional - a hook if you want to mark the bad guys
+     .hq-hint            the loading / error / "open the console" message
+
+   Change anything you like - it is your fork.
+
+   Palette: hero blue + crimson + gold, with a toxic green reserved for
+   sinister things (downed heroes, villains, things going wrong). */
 
 :root {
-  --slate: #455466;
-  --lavender: #cdc4ff;
-  --orange: #ff8044;
-  --cream: #ede9e5;
-  --blue: #166aea;
-  --ink: #1b2330;
+  color-scheme: dark;
+
+  /* surfaces */
+  --night: #070a14;
+  --night-2: #0c1020;
+  --panel: rgba(255, 255, 255, 0.045);
+  --panel-hi: rgba(255, 255, 255, 0.075);
+  --edge: rgba(255, 255, 255, 0.09);
+  --edge-hi: rgba(255, 255, 255, 0.18);
+
+  /* heroes */
+  --blue: #3b7dff;
+  --blue-soft: #7aa9ff;
+  --crimson: #ff2e4d;
+  --crimson-deep: #c2102c;
+  --gold: #ffc53d;
+  --gold-soft: #ffe08a;
+
+  /* sinister */
+  --venom: #4ade80;
+  --venom-dim: #1f7a49;
+
+  /* text */
+  --text: #eef1f8;
+  --text-dim: #a8b0c4;
+  --text-faint: #6f7996;
+
+  --radius: 14px;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 * {
@@ -22,154 +57,338 @@
 
 body {
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  background: var(--cream);
-  color: var(--ink);
+  color: var(--text);
   line-height: 1.5;
-  padding: 24px;
+  padding: 28px 24px 48px;
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 420px at 12% -8%, rgba(255, 46, 77, 0.18), transparent 60%),
+    radial-gradient(760px 420px at 88% 6%, rgba(59, 125, 255, 0.2), transparent 62%),
+    radial-gradient(600px 500px at 50% 108%, rgba(255, 197, 61, 0.09), transparent 65%),
+    linear-gradient(180deg, var(--night-2), var(--night) 70%);
+  background-attachment: fixed;
 }
+
+/* Faint comic halftone over the whole page - sits under the content. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+#app {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------- header ---------------- */
 
 .hq-header {
-  background: linear-gradient(135deg, var(--blue), var(--slate));
-  color: #fff;
-  padding: 22px 26px;
-  border-radius: 14px;
-  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+  padding: 26px 30px;
+  margin-bottom: 20px;
+  border-radius: 18px;
+  border: 1px solid var(--edge);
+  background: linear-gradient(135deg, rgba(59, 125, 255, 0.16), rgba(255, 46, 77, 0.12) 60%, rgba(255, 197, 61, 0.1));
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+/* gradient hairline along the top edge: red -> gold -> blue */
+.hq-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--crimson), var(--gold) 45%, var(--blue));
 }
 .hq-header h1 {
-  font-size: 26px;
-  letter-spacing: -0.01em;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  background: linear-gradient(92deg, #fff 8%, var(--gold-soft) 34%, #fff 56%, var(--blue-soft) 88%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 9s linear infinite;
+}
+/* the shine sweep across the title */
+@keyframes shine {
+  from { background-position: 180% 0; }
+  to { background-position: -60% 0; }
 }
 .hq-sub {
-  opacity: 0.85;
+  margin-top: 6px;
   font-size: 14px;
-  margin-top: 4px;
+  color: var(--text-dim);
 }
 
-/* Toolbar - on the page from day one, wired up in step 7 */
+/* ---------------- toolbar ---------------- */
+/* On the page from step 1, wired up in step 7. */
+
 .hq-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 .hq-controls button {
-  background: var(--blue);
-  color: #fff;
-  border: 0;
-  border-radius: 8px;
-  padding: 9px 14px;
+  position: relative;
+  border: 1px solid var(--edge-hi);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font: inherit;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  background: var(--panel-hi);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: transform 0.15s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
 }
 .hq-controls button:hover {
-  background: var(--slate);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--edge-hi);
 }
+.hq-controls button:active { transform: translateY(0); }
+.hq-controls button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* attack = crimson, heal = gold, recruit = hero blue */
 .hq-controls #attack-round {
-  background: var(--orange);
+  background: linear-gradient(180deg, var(--crimson), var(--crimson-deep));
+  border-color: rgba(255, 46, 77, 0.5);
+  color: #fff;
 }
 .hq-controls #attack-round:hover {
-  background: #e96a2c;
+  box-shadow: 0 0 0 1px rgba(255, 46, 77, 0.5), 0 10px 26px -10px var(--crimson);
+}
+.hq-controls #heal-all {
+  background: linear-gradient(180deg, var(--gold), #e0a018);
+  border-color: rgba(255, 197, 61, 0.5);
+  color: #2a1c00;
+}
+.hq-controls #heal-all:hover {
+  box-shadow: 0 0 0 1px rgba(255, 197, 61, 0.5), 0 10px 26px -10px var(--gold);
 }
 .hq-controls form {
   display: flex;
   gap: 8px;
   align-items: center;
 }
-.hq-controls input {
-  border: 1px solid #d8d0c6;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 14px;
+.hq-controls form button[type="submit"] {
+  background: linear-gradient(180deg, var(--blue), #1f4fd8);
+  border-color: rgba(59, 125, 255, 0.5);
+  color: #fff;
 }
+.hq-controls form button[type="submit"]:hover {
+  box-shadow: 0 0 0 1px rgba(59, 125, 255, 0.5), 0 10px 26px -10px var(--blue);
+}
+.hq-controls input {
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  padding: 10px 13px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.35);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.hq-controls input::placeholder { color: var(--text-faint); }
+.hq-controls input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(59, 125, 255, 0.22);
+}
+
+/* ---------------- roster ---------------- */
 
 .hq-roster {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
 }
 
+/* the console / loading / error message */
 .hq-hint {
   grid-column: 1 / -1;
-  background: #fff;
-  border: 1px dashed #d8d0c6;
-  border-radius: 12px;
-  padding: 20px;
-  color: #6b7686;
+  border: 1px dashed var(--edge-hi);
+  border-radius: var(--radius);
+  padding: 22px;
   font-size: 14px;
+  color: var(--text-dim);
+  background: var(--panel);
 }
+.hq-hint b { color: var(--gold-soft); font-weight: 700; }
 
-/* Hero card - created by your renderRoster() from step 6 onward */
+/* ---------------- hero card ---------------- */
+/* Built by your renderRoster() from step 6 onward. */
+
 .hero-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px 18px;
-  box-shadow: 0 8px 24px -16px rgba(27, 35, 48, 0.5);
-  border-left: 4px solid var(--lavender);
+  position: relative;
+  overflow: hidden;
+  padding: 18px 20px;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--panel-hi), var(--panel));
+  backdrop-filter: blur(8px);
+  box-shadow: 0 20px 44px -28px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform 0.18s, box-shadow 0.25s, border-color 0.25s;
+}
+/* gold spine down the left edge */
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--gold), rgba(255, 197, 61, 0.15));
+}
+/* soft sheen in the top-left corner */
+.hero-card::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  top: -90px;
+  left: -60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.11), transparent 70%);
+  pointer-events: none;
 }
 .hero-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px -16px rgba(27, 35, 48, 0.6);
-  border-left-color: var(--orange);
-}
-.hero-card h3 {
-  font-size: 18px;
-  color: var(--slate);
-}
-.hero-card .origin {
-  font-size: 13px;
-  color: var(--blue);
-  font-weight: 600;
-}
-.hero-card .stats {
-  font-size: 13px;
-  color: #6b7686;
-  margin-top: 8px;
+  transform: translateY(-3px);
+  border-color: rgba(59, 125, 255, 0.45);
+  box-shadow: 0 26px 54px -26px rgba(0, 0, 0, 1), 0 0 34px -14px rgba(59, 125, 255, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+.hero-card h3 {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: #fff;
+}
+.hero-card .origin {
+  margin-top: 1px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue-soft);
+}
 /* Day job - added to the card in step 8. Occupations from the API can be very
    long ("King and Chieftain of Wakanda, scientist; former school teacher"), so
    the CSS truncates instead of the JS. */
 .hero-card .dayjob {
+  margin-top: 6px;
   font-size: 12px;
-  color: #8b93a1;
-  margin-top: 2px;
+  color: var(--text-faint);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.hero-card .stats {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
 }
 
 /* Optional: the step 8 portrait stretch (images.sm from the API) */
 .hero-card img {
   width: 100%;
-  height: 130px;
+  height: 132px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  background: var(--cream);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  border: 1px solid var(--edge);
+  background: rgba(0, 0, 0, 0.4);
 }
+
+/* ---------------- health bar ---------------- */
 
 .hp-bar {
-  height: 6px;
-  background: #eee;
-  border-radius: 3px;
+  height: 7px;
   margin-top: 8px;
+  border-radius: 99px;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
   overflow: hidden;
 }
+/* Your JS sets width: nn%. The gradient underneath is a FIXED pixel width, so
+   a short bar only reveals its left end - a badly hurt hero reads crimson, a
+   healthy one runs through gold to blue. Colour follows the data for free. */
 .hp-bar .hp-fill {
   height: 100%;
-  background: var(--orange);
-  border-radius: 3px;
-  transition: width 0.25s;
+  border-radius: 99px;
+  background-image: linear-gradient(90deg, var(--crimson), var(--gold) 52%, var(--blue));
+  background-size: 240px 100%;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 12px -2px rgba(255, 197, 61, 0.65);
+  transition: width 0.35s ease;
 }
 
-/* A hero on 0 HP - the class your step 6 stretch toggles */
+/* ---------------- sinister: downed heroes & villains ---------------- */
+
+/* A hero on 0 HP - the class your step 6 stretch toggles. */
 .hero-card.downed {
-  opacity: 0.5;
-  filter: grayscale(1);
-  border-left-color: #b8b1a6;
+  border-color: rgba(74, 222, 128, 0.22);
+  background: linear-gradient(180deg, rgba(74, 222, 128, 0.07), rgba(255, 255, 255, 0.02));
+  box-shadow: 0 20px 44px -30px rgba(0, 0, 0, 0.95), inset 0 0 40px -18px rgba(74, 222, 128, 0.35);
+}
+.hero-card.downed::before {
+  background: linear-gradient(180deg, var(--venom), var(--venom-dim));
+}
+.hero-card.downed h3 {
+  color: var(--text-dim);
+  text-decoration: line-through;
+  text-decoration-color: rgba(74, 222, 128, 0.55);
+  text-decoration-thickness: 2px;
+}
+.hero-card.downed .origin { color: var(--venom-dim); }
+.hero-card.downed .dayjob,
+.hero-card.downed .stats { color: var(--text-faint); }
+.hero-card.downed img { filter: grayscale(0.85) brightness(0.7); }
+.hero-card.downed:hover {
+  border-color: rgba(74, 222, 128, 0.45);
+  box-shadow: 0 26px 54px -26px rgba(0, 0, 0, 1), 0 0 32px -14px rgba(74, 222, 128, 0.5);
+}
+/* corner tag, drawn purely in CSS - no markup needed */
+.hero-card.downed .stats::after {
+  content: "DOWN";
+  float: right;
+  padding: 1px 7px;
+  border: 1px solid rgba(74, 222, 128, 0.45);
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--venom);
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.7);
+}
+
+/* Optional hook: add "villain" to a card's class list to mark the bad guys. */
+.hero-card.villain::before {
+  background: linear-gradient(180deg, var(--venom), var(--venom-dim));
+}
+.hero-card.villain .origin { color: var(--venom); }
+
+/* ---------------- motion ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hq-header h1 { animation: none; }
+  .hero-card,
+  .hq-controls button,
+  .hp-bar .hp-fill { transition: none; }
 }
