@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hero HQ - Enter · JS</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="hq-header">
+        <h1>Hero HQ</h1>
+        <p class="hq-sub">Enter · JS - one file, eight steps, your app grows all day</p>
+      </header>
+
+      <!--
+        The toolbar. Every control here is DEAD until step 7 - clicking does
+        nothing on purpose. In step 7 you wire these up by id.
+      -->
+      <div class="hq-controls">
+        <button id="attack-round" type="button">Attack round</button>
+        <button id="heal-all" type="button">Heal all +20</button>
+        <form id="recruit-form">
+          <input name="heroName" placeholder="New hero name" required />
+          <button type="submit">Recruit</button>
+        </form>
+      </div>
+
+      <!-- From step 6, your heroes render in here -->
+      <main id="roster" class="hq-roster">
+        <p class="hq-hint">
+          Open the <b>Console</b> tab to see your output.<br />
+          From <b>step 6</b> your heroes appear here on the page.
+        </p>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

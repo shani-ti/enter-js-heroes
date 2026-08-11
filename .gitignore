@@ -1,0 +1,14 @@
+# Dependencies & build output
+node_modules/
+dist/
+
+# OS cruft
+.DS_Store
+
+# Local agent/editor config
+.claude/
+
+# Instructor answer key - keep OUT of the public repo.
+# The annotated snapshots live in the private enter-js-heroes-solutions repo.
+# (checkpoints/ IS public on purpose - it is the catch-up mechanism.)
+solutions/

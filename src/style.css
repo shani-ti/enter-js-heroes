@@ -1,0 +1,175 @@
+/* ===== Hero HQ · Enter - JS =====
+   Wix palette: slate #455466 · lavender #CDC4FF · orange #FF8044
+                cream #EDE9E5 · blue #166AEA
+   You are not asked to write CSS in this course - the classes your JS creates
+   in steps 6-8 (.hero-card, .origin, .stats, .hp-bar, .downed) are all styled
+   here already. Change anything you like. */
+
+:root {
+  --slate: #455466;
+  --lavender: #cdc4ff;
+  --orange: #ff8044;
+  --cream: #ede9e5;
+  --blue: #166aea;
+  --ink: #1b2330;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.5;
+  padding: 24px;
+}
+
+.hq-header {
+  background: linear-gradient(135deg, var(--blue), var(--slate));
+  color: #fff;
+  padding: 22px 26px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+}
+.hq-header h1 {
+  font-size: 26px;
+  letter-spacing: -0.01em;
+}
+.hq-sub {
+  opacity: 0.85;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* Toolbar - on the page from day one, wired up in step 7 */
+.hq-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.hq-controls button {
+  background: var(--blue);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.hq-controls button:hover {
+  background: var(--slate);
+}
+.hq-controls #attack-round {
+  background: var(--orange);
+}
+.hq-controls #attack-round:hover {
+  background: #e96a2c;
+}
+.hq-controls form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.hq-controls input {
+  border: 1px solid #d8d0c6;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.hq-roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.hq-hint {
+  grid-column: 1 / -1;
+  background: #fff;
+  border: 1px dashed #d8d0c6;
+  border-radius: 12px;
+  padding: 20px;
+  color: #6b7686;
+  font-size: 14px;
+}
+
+/* Hero card - created by your renderRoster() from step 6 onward */
+.hero-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 24px -16px rgba(27, 35, 48, 0.5);
+  border-left: 4px solid var(--lavender);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.hero-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -16px rgba(27, 35, 48, 0.6);
+  border-left-color: var(--orange);
+}
+.hero-card h3 {
+  font-size: 18px;
+  color: var(--slate);
+}
+.hero-card .origin {
+  font-size: 13px;
+  color: var(--blue);
+  font-weight: 600;
+}
+.hero-card .stats {
+  font-size: 13px;
+  color: #6b7686;
+  margin-top: 8px;
+}
+
+/* Day job - added to the card in step 8. Occupations from the API can be very
+   long ("King and Chieftain of Wakanda, scientist; former school teacher"), so
+   the CSS truncates instead of the JS. */
+.hero-card .dayjob {
+  font-size: 12px;
+  color: #8b93a1;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Optional: the step 8 portrait stretch (images.sm from the API) */
+.hero-card img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: var(--cream);
+}
+
+.hp-bar {
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.hp-bar .hp-fill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 3px;
+  transition: width 0.25s;
+}
+
+/* A hero on 0 HP - the class your step 6 stretch toggles */
+.hero-card.downed {
+  opacity: 0.5;
+  filter: grayscale(1);
+  border-left-color: #b8b1a6;
+}
