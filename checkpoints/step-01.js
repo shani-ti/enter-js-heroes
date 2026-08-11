@@ -38,12 +38,12 @@
 // TODO 1c: try to reassign one `let` and one `const`.
 //   Which one throws? Why?
 
-// TODO Stretch: predict BEFORE you run, then check.
+// TODO Stretch 1: predict BEFORE you run, then check.
 //   console.log(typeof typeof 5);  // ?
 //   console.log(typeof NaN);       // ?
 
 
-// TODO Stretch: build a one-line hero summary using + - the painful way.
+// TODO Stretch 2: build a one-line hero summary using + - the painful way.
 //   Mix the numbers into the string. Notice anything odd? Keep that feeling,
 //   it is what step 2 is for.
 //   const painfulSummary = "HP: " + healthPoints + " Rescues: " + rescues;
@@ -52,6 +52,8 @@
 // ------------------------------------------------------------
 //  STEP 2 · Tame the types                (Lesson 1 · ~10 min)
 // ------------------------------------------------------------
+//  Start with TODO 2a, a few lines ABOVE this banner - the summary you wrote
+//  in step 1. Edits happen where the code is, not where the lesson is.
 
 // TODO 2b: a power level arrives from a server as a STRING.
 const powerFromServer = "7";

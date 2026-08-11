@@ -36,7 +36,7 @@ console.log(typeof name, typeof healthPoints, typeof isActive, typeof teamName, 
 healthPoints = 92;           // fine - let can be reassigned
 // origin = "Mutant";        // TypeError: Assignment to constant variable.
 
-// Stretch:
+// Stretch 1:
 console.log(typeof typeof 5); // "string"
 console.log(typeof NaN);      // "number"
 
