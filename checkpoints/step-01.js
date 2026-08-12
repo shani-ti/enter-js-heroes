@@ -19,12 +19,12 @@
 //  Open the CONSOLE tab to watch your output as you work.
 
 // TODO 1a: declare your hero with the RIGHT keyword for each trait.
-//   Fixed traits (never change):  const  ->  name, origin
+//   Fixed traits (never change):  const  ->  heroName, origin
 //   Changing traits:              let    ->  healthPoints, rescues
 //   Between them, use all five everyday primitives at least once:
 //   string, number, boolean, null, undefined.
 //
-// const name = ...
+// const heroName = ...
 // const origin = ...       // 'Kryptonian' | 'Asgardian' | 'Mutant' | 'Human' ...
 // let healthPoints = ...
 // let rescues = ...
@@ -33,7 +33,7 @@
 // let lastMission;         // undefined - JS has nothing to give you
 
 // TODO 1b: log each value AND its type.
-//   Hint: console.log(name, typeof name);
+//   Hint: console.log(heroName, typeof heroName);
 
 // TODO 1c: try to reassign one `let` and one `const`.
 //   Which one throws? Why?
@@ -85,7 +85,9 @@ function describeHero(heroName) {
 
 // TODO 3a: your hero is still five loose variables. Group them into ONE
 //   object - and reuse the variables you already declared (property shorthand).
-// const hero = { name, origin, healthPoints, rescues };
+//   Note the key stays `name` even though the variable is `heroName`: step 8
+//   maps the API's `name` field onto it, so the shape has to match.
+// const hero = { name: heroName, origin, healthPoints, rescues };
 
 // TODO 3b: add a villain with the same shape.
 // const villain = { name: "Loki", origin: "Asgardian", healthPoints: 85, rescues: 0 };

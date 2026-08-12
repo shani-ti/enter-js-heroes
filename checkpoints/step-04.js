@@ -18,7 +18,7 @@
 // ------------------------------------------------------------
 
 // 1a: const for the fixed traits, let for the ones that change.
-const name = "Superman";     // string
+const heroName = "Superman"; // string
 const origin = "Kryptonian"; // string
 let healthPoints = 100;      // number
 let rescues = 42;            // number
@@ -28,9 +28,9 @@ let lastMission;             // undefined - never assigned
 
 // 1b: value and type, side by side.
 console.log("-- values --");
-console.log(name, origin, healthPoints, rescues, isActive, teamName, lastMission);
+console.log(heroName, origin, healthPoints, rescues, isActive, teamName, lastMission);
 console.log("-- types --");
-console.log(typeof name, typeof healthPoints, typeof isActive, typeof teamName, typeof lastMission);
+console.log(typeof heroName, typeof healthPoints, typeof isActive, typeof teamName, typeof lastMission);
 
 // 1c: reassignment.
 healthPoints = 92;           // fine - let can be reassigned
@@ -43,7 +43,7 @@ console.log(typeof NaN);      // "number"
 
 // 2a: the same summary, rebuilt with a template literal. This REPLACED the
 //     + version from step 1 - the file changed, it did not just grow.
-const summary = `${name} the ${origin} - HP ${healthPoints}, ${rescues} rescues`;
+const summary = `${heroName} the ${origin} - HP ${healthPoints}, ${rescues} rescues`;
 console.log(summary);
 
 
@@ -75,7 +75,7 @@ console.log(1 + "1" - 1); // 10                -> 1 + "1" is "11", then "11" - 1
 //  STEP 3 · The battle simulator          (revised in step 4)
 // ------------------------------------------------------------
 
-const hero = { name, origin, healthPoints, rescues };
+const hero = { name: heroName, origin, healthPoints, rescues };
 const villain = { name: "Loki", origin: "Asgardian", healthPoints: 85, rescues: 0 };
 
 // TODO 4c: give `hero` a describe() METHOD that uses `this`.
