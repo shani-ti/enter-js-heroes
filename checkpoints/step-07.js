@@ -63,7 +63,7 @@ function describeHero(heroName) {
 }
 describeHero("");   // "Unknown vigilante"  - "" is falsy
 describeHero(null); // "Unknown vigilante"  - null is falsy
-describeHero("0");  // "0"                  - TRAP: a non-empty string is truthy
+describeHero("0");  // "0"                  - a non-empty string is truthy
 
 // Stretch: the evil puzzles.
 console.log([] + []);     // ""                -> both arrays coerce to "" and concat
